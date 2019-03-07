@@ -1,0 +1,63 @@
+===============================================================================
+
+                         SISTEME DE OPERARE : TEMA 2
+                            Cristi Nica : 336CA
+
+===============================================================================
+
+     Pentru realizarea temei am pornit de la scheletul de cod pus la dispozitie,
+impreuna cu scheletul si solutia laboratorului 3. Am adus modificari si am 
+adaugat noi functionalitati scheletului in cadrul fisierului cmd.c, restul
+fisierelor ramanand asa cum au fost preluate de pe github.
+     Voi prezenta principalele functionalitati si modurile in care le-am
+implementat:
+
+     - redirectarea: aceasta a fost una dintre cele mai importante parti in
+realizarea temei, deoarece majoritatea comenzilor folosite pentru testare
+foloseau redirectare. In prima faza a acestei operatiuni, functia redirect_helper
+realizeaza parsarea comenzii si indica tipul de redirectare ce trebuie efectuat.
+Astfel, folosindu-ne de parametrii in / out / err ai unui element de tipul
+simple_command_t vom sti daca trebuie sa redirectam intrarea standard, iesirea
+standard sau iesirea de eroare. Folosindu-ne de parametrul io_flags al aceluiasi
+element vom sti modul in care trebuie sa deschidem fisierele de iesire / iesire
+in caz de eroare. Restul operatiei va fi realizata de functia redirect. Aceasta
+va deschide fisierul al carui nume este primit ca parametru, si va face ca 
+acesta sa devina noua valoare pentru intrarea / iesirea standard sau iesirea
+in caz de eroare.
+
+     - shell_cd: functie folosita pentru schimbarea directorului curent. Aceasta
+va folosi functia de sistem chdir, careia ii este trimisa calea catre directorul
+la care vrem sa ajunem. In cazul in care comanda cd va fi apelata fara parametri
+functia nu va face nimic, deci vom ramane in directorul curent.
+
+     - env_var_shell: functie folosita pentru initializarea / modificarea 
+variabilelor de mediu. Aceasta foloseste cele doua functii posix getenv si 
+setenv pentru obtinerea si setarea unei variabile de mediu.
+
+     - parse simple: este functia care va primi o singura comanda si o va executa,
+in functie de natura acesteia. Pentru implementarea ei am respectat TODO-urile
+din scheletul temei. Astfel, pentru comenzi de tipul exit / quit vom apela functia
+return_shell, pentru comanda cd va fi apelata functia shell_cd (dupa ce se va
+efectua redirectarea in prealabil), pentru comenzi ce lucreaza cu variabilele
+de mediu voi apela env_var_shell. Pentru restul comenzilor externe voi proceda
+conform indicatiilor TODO. Va fi creat un nou proces, se va efectua redirectarea
+pentru acesta si se va executa comanda folosind functia execvp, la fel ca in 
+cadrul laboratorului. La final, procesul parinte asteapta ca procesul copil
+(cel care a executat comanda) sa termine taskul.
+
+     - do_in_parallel: asa cum spun si instructiunile din comentariul de tip
+TODO, functia va crea doua procese, fiecaruia dintre ele fiindu-i atribuita
+cate o comanda. Procesele vor rula in paralel. Parintele va astepta ca cele
+doua procese copil sa se termine si apoi va returna valoarea intoarsa de acestea.
+
+     - do_on_pipe: aceasta functie se va ocupa de "perechile" de comenzi in care
+output-ul primeia dintre ele trebuie sa fie input-ul celei de a doua. Voi salva 
+file descriptorii initiali pentru stdin si stdout pentru a putea reveni ulterior
+la acestia. La pasul urmator voi crea pipe-ul prin apelul functiei pipe si voi
+realiza redirectarile catre acesta. In final, parintele asteapta sfarsitul 
+procesului copil si va reveni la vechii file descriptori.
+===============================================================================
+
+     OBSERVATIE: Foarte folositor parserul, a redus cu mult dificultatea temei! Multumim :)
+
+===============================================================================
