@@ -2,13 +2,6 @@
 
 ===============================================================================
 
-     Pentru realizarea temei am pornit de la scheletul de cod pus la dispozitie,
-impreuna cu scheletul si solutia laboratorului 3. Am adus modificari si am 
-adaugat noi functionalitati scheletului in cadrul fisierului cmd.c, restul
-fisierelor ramanand asa cum au fost preluate de pe github.
-     Voi prezenta principalele functionalitati si modurile in care le-am
-implementat:
-
      - redirectarea: aceasta a fost una dintre cele mai importante parti in
 realizarea temei, deoarece majoritatea comenzilor folosite pentru testare
 foloseau redirectare. In prima faza a acestei operatiuni, functia redirect_helper
